@@ -27,13 +27,15 @@ func main() {
   if err != nil {
     log.Fatalf("Error opening src ldb: %v", err.Error())
   }
+  defer srcDB.Close()
   dstDB, err := leveldb.OpenFile(dstPath, nil)
   if err != nil {
     log.Fatalf("Error opening dst ldb: %v", err.Error())
   }
+  defer dstDB.Close()
   data, err := srcDB.Get(srcKey, nil)
   if err != nil {
     log.Fatalf("Error copying src key: %v", err.Error())
   }
-  dstDB.Put(data, dstKey, nil)
+  dstDB.Put(dstKey, data, nil)
 }
